@@ -3,37 +3,51 @@ export const getRequestsAPI = () => ({
   method: "get",
 });
 
-export const getAppealsAPI = () => ({
-  uri: `/commissioner/appeals`,
+export const getDecisionAppealsAPI = () => ({
+  uri: `/api/zalbaProtivOdluke/all`,
+  method: "get",
+});
+
+export const getSilenceAppealsAPI = () => ({
+  uri: `/api/zalbaProtivCutanja/all`,
   method: "get",
 });
 
 export const respondToAppealsAPI = (response) => ({
-  uri: `/commissioner/response`,
+  uri: `/api/resenje`,
   method: "post",
   data: response,
 });
 
+export const sendResponseAPI = (payload) => ({
+  uri: `api/resenje/sendResenje`,
+  method: "post",
+  data: payload,
+});
+
 export const getMyResponsesAPI = () => ({
-  uri: `/commissioner/responses`,
+  uri: `/api/resenje/all/`,
   method: "get",
 });
 
-export const notifyOfficialAPI = (notification) => ({
-  uri: `/commissioner/notify`,
-  method: "post",
-  data: notification,
-});
-
-export const exportToXHTMLAPI = (data) => ({
-  uri: "/api/obavestenje/generate/html/",
+export const notifyOfficialDecisionAPI = (id) => ({
+  uri: `/api/zalbaProtivOdluke/sendZalba/${id}`,
   method: "post",
 });
 
-export const exportToPDFAPI = (data) => ({
-  uri: "/api/obavestenje/generate/pdf/",
+export const notifyOfficialSilenceAPI = (id) => ({
+  uri: `/api/zalbaProtivCutanja/sendZalba/${id}`,
   method: "post",
-  data,
+});
+
+export const exportToXHTMLAPI = (id) => ({
+  uri: `/api/resenje/generate/html/${id}`,
+  method: "get",
+});
+
+export const exportToPDFAPI = (id) => ({
+  uri: `/api/resenje/generate/pdf/${id}`,
+  method: "get",
 });
 
 export const getDecisionPatternAPI = () => ({

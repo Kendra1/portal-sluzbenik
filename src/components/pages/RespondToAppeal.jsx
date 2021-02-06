@@ -6,9 +6,13 @@ import { docSpec } from "../../assets/data/docsSpec";
 import {
   getDecisionPattern,
   respondToAppeal,
+  sendResponse,
 } from "../../app/commissioner/commissioner.action";
 import { Button } from "@material-ui/core";
-import { selectDecisionPattern } from "../../app/commissioner/commissioner.selector";
+import {
+  selectCreation,
+  selectDecisionPattern,
+} from "../../app/commissioner/commissioner.selector";
 
 export const RespondToAppeal = () => {
   const [state, setState] = useState();
@@ -41,9 +45,11 @@ export const RespondToAppeal = () => {
     () => JSON.stringify(localStorage.getItem("appealId")),
     []
   );
-
+  console.log("doc:", patternDoc);
+  console.log("appeadlid", appealId);
   useEffect(() => {
     if (patternDoc && !state) {
+      console.log("IFF");
       patternDoc.setAttribute(
         "zalbaId",
         appealId.slice(1, appealId.length - 1)
@@ -58,17 +64,25 @@ export const RespondToAppeal = () => {
       const newState = ref.current.getXml();
       if (newState) {
         const newestState = builder.buildObject(newState);
-        // newestState.setAttribute("zalba_id", appealId);
-        // setState(newestState);
-        dispatch(respondToAppeal, newestState);
+        dispatch(respondToAppeal(newestState));
       }
     }
   };
 
-  return pattern ? (
+  const creation = useSelector(selectCreation);
+
+  const handleSendRequest = () => {
+    const type = localStorage.getItem("appealType");
+    dispatch(sendResponse(type));
+  };
+
+  return state ? (
     <>
-      <XmlEditor docSpec={docSpec} ref={ref} xml={pattern} mode='laic' />
-      <Button onClick={onClickHarvest}>Respond</Button>
+      <XmlEditor docSpec={docSpec} ref={ref} xml={state} mode='laic' />
+      <Button onClick={onClickHarvest}>Create response</Button>
+      {creation ? (
+        <Button onClick={handleSendRequest}>Send response </Button>
+      ) : null}
     </>
   ) : null;
 };

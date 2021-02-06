@@ -1,29 +1,28 @@
 import React, { useCallback, useEffect } from "react";
 import { useHistory } from "react-router-dom";
-// import { reqs as data } from "../../assets/xml/requests.json";
 import { Button } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
-import { getMyResponses } from "../../app/commissioner/commissioner.action";
-import { selectResponses } from "../../app/commissioner/commissioner.selector";
+import { getDecisionAppeals } from "../../app/commissioner/commissioner.action";
+import { selectDecisionAppeals } from "../../app/commissioner/commissioner.selector";
 
-export const Dashboard = () => {
+export const AllDecisionAppeals = () => {
   const history = useHistory();
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getMyResponses());
+    dispatch(getDecisionAppeals());
   }, [dispatch]);
 
-  const appealsState = useSelector(selectResponses);
+  const appealsState = useSelector(selectDecisionAppeals);
 
   var parser = new DOMParser();
   var xmlDoc = parser.parseFromString(appealsState, "text/xml");
-  const requests = xmlDoc.getElementsByTagName("res:resenje");
+  const requests = xmlDoc.getElementsByTagName("zpo:zalba_protiv_odluke");
 
   const handleSingleDecision = useCallback(
     (request) => {
-      localStorage.setItem("currentDecision", request);
-      history.push("singleDecision");
+      localStorage.setItem("currentDecisionAppeal", request);
+      history.push("singleDecisionAppeal");
     },
     [history]
   );
@@ -63,7 +62,7 @@ export const Dashboard = () => {
             }}
             onClick={() => handleSingleDecision(req.document)}
           >
-            Go to Decision
+            Go to Appeal
           </Button>
         </div>
       ))}

@@ -18,6 +18,8 @@ import { SingleDecision } from "../pages/SingleDecision";
 import { RespondToAppeal } from "../pages/RespondToAppeal";
 import { DecisionAppeals } from "../pages/DecisionAppeals";
 import { SilenceAppeals } from "../pages/SilenceAppeals";
+import { AllDecisionAppeals } from "../pages/AllDecisionAppeals";
+import { AllSilenceAppeals } from "../pages/AllSilenceAppeals";
 
 export const Router = () => (
   <BrowserRouter>
@@ -35,6 +37,8 @@ export const Router = () => (
         path='/singleSilenceAppeal'
         component={SingleSilenceAppeal}
       />
+      <PrivateRoute path='/allDecisionAppeals' component={AllDecisionAppeals} />
+      <PrivateRoute path='/allSilenceAppeals' component={AllSilenceAppeals} />
       <PrivateRoute path='/handleAppeal' component={HandleAppeal} />
       <PrivateRoute path='/respondToAppeal' component={RespondToAppeal} />
       <PrivateRoute path='/singleDecision' component={SingleDecision} />

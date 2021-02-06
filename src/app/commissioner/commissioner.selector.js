@@ -1,6 +1,8 @@
 import { createSelector } from "reselect";
 
-const _selectAppeals = (state) => state.commissioner.appeals;
+const _selectDecisionAppeals = (state) => state.commissioner.decisionAppeals;
+
+const _selectSilenceAppeals = (state) => state.commissioner.silenceAppeals;
 
 const _selectResponses = (state) => state.commissioner.responses;
 
@@ -10,9 +12,16 @@ const _selectCurrentDecisionPDF = (state) => state.commissioner.currentPDF;
 
 const _selectCurrentDecisionXHTML = (state) => state.commissioner.currentXHTML;
 
-export const selectAppeals = createSelector(
-  [_selectAppeals],
-  (appeals) => appeals
+const _selectCreation = (state) => state.commissioner.creation;
+
+export const selectDecisionAppeals = createSelector(
+  [_selectDecisionAppeals],
+  (decisionAppeals) => decisionAppeals
+);
+
+export const selectSilenceAppeals = createSelector(
+  [_selectSilenceAppeals],
+  (silenceAppeals) => silenceAppeals
 );
 
 export const selectResponses = createSelector(
@@ -33,4 +42,9 @@ export const selectCurrentDecisionPDF = createSelector(
 export const selectCurrentDecisionXHTML = createSelector(
   [_selectCurrentDecisionXHTML],
   (currentXHTML) => currentXHTML
+);
+
+export const selectCreation = createSelector(
+  [_selectCreation],
+  (creation) => creation
 );

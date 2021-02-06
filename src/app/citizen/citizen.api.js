@@ -41,7 +41,7 @@ export const exportDecisionAppealToXHTMLAPI = (id) => ({
 });
 
 export const exportDecisionAppealToPDFAPI = (id) => ({
-  uri: `/api/zalbaProtivOdluke/generate/pdf${id}`,
+  uri: `/api/zalbaProtivOdluke/generate/pdf/${id}`,
   method: "get",
 });
 
@@ -51,6 +51,6 @@ export const exportSilenceAppealToXHTMLAPI = (id) => ({
 });
 
 export const exportSilenceAppealToPDFAPI = (id) => ({
-  uri: `/api/zalbaProtivCutanja/generate/pdf${id}`,
+  uri: `/api/zalbaProtivCutanja/generate/pdf/${id}`,
   method: "get",
 });

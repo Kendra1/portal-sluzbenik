@@ -1,16 +1,19 @@
 import { combineReducers } from "redux";
 import {
-  STORE_APPEALS,
+  STORE_DECISION_APPEALS,
   STORE_MY_RESPONSES,
   STORE_PDF,
   CLEAR_PDF,
   STORE_XHTML,
   CLEAR_XHTML,
   STORE_DECISION_PATTERN,
+  STORE_SILENCE_APPEALS,
+  STORE_CREATION,
 } from "./commissioner.constants";
 
 const initialState = {
-  appeals: [],
+  decisionAppeals: [],
+  silenceAppeals: [],
   responses: [],
   pattern: null,
   currentPDF: null,
@@ -18,8 +21,18 @@ const initialState = {
   creation: null,
 };
 
-const appealsReducer = (state = initialState.appeals, action) => {
-  if (action.type === STORE_APPEALS) {
+const decisionAppealsReducer = (
+  state = initialState.decisionAppeals,
+  action
+) => {
+  if (action.type === STORE_DECISION_APPEALS) {
+    return action.payload;
+  }
+  return state;
+};
+
+const silenceAppealsReducer = (state = initialState.silenceAppeals, action) => {
+  if (action.type === STORE_SILENCE_APPEALS) {
     return action.payload;
   }
   return state;
@@ -57,10 +70,19 @@ const currentXTHMLReducer = (state = initialState.currentXHTML, action) => {
   return state;
 };
 
+const creationReducer = (state = initialState.creation, action) => {
+  if (action.type === STORE_CREATION) {
+    return action.payload;
+  }
+  return state;
+};
+
 export const commissionerReducer = combineReducers({
-  appeals: appealsReducer,
+  decisionAppeals: decisionAppealsReducer,
+  silenceAppeals: silenceAppealsReducer,
   responses: responsesReducer,
   pattern: patternReducer,
   currentPDF: currentPDFReducer,
   currentXHTML: currentXTHMLReducer,
+  creation: creationReducer,
 });

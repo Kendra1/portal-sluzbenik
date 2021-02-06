@@ -12,6 +12,7 @@ import {
   selectCurrentSilenceAppealXHTML,
 } from "../../app/citizen/citizen.selectors";
 import { selectLoggedUser } from "../../app/auth/auth.selectors";
+import { notifyOfficialSilence } from "../../app/commissioner/commissioner.action";
 
 export const SingleSilenceAppeal = () => {
   const loggedUser = useSelector(selectLoggedUser);
@@ -70,8 +71,13 @@ export const SingleSilenceAppeal = () => {
   };
 
   const respondToAppeal = () => {
-    localStorage.setItem("appealId", JSON.stringify(id));
+    localStorage.setItem("appealId", id);
+    localStorage.setItem("appealType", true);
     history.push("respondToAppeal");
+  };
+
+  const notifyOffical = () => {
+    dispatch(notifyOfficialSilence(id));
   };
 
   return (
@@ -80,7 +86,11 @@ export const SingleSilenceAppeal = () => {
       <Button onClick={handleExportToXHTML}>Export to XHTML</Button>
       <Button onClick={handleExportToPDF}>Export to PDF</Button>
       {loggedUser.role === "ROLE_POVERENIK" ? (
-        <Button onClick={respondToAppeal}>Respond to appeal</Button>
+        <>
+          <Button onClick={notifyOffical}>Notify Official</Button>
+
+          <Button onClick={respondToAppeal}>Respond to appeal</Button>
+        </>
       ) : null}
     </>
   );

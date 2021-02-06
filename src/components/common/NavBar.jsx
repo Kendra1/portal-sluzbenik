@@ -43,15 +43,23 @@ export const NavBar = () => {
   };
 
   const myResponses = () => {
-    history.push("citizenDashboard");
+    history.push("");
   };
 
   const appeals = () => {
-    history.push("dashboard");
+    history.push("");
   };
 
   const responses = () => {
     history.push("requestAnswers");
+  };
+
+  const decisionAppeals = () => {
+    history.push("allDecisionAppeals");
+  };
+
+  const silenceAppeals = () => {
+    history.push("allSilenceAppeals");
   };
 
   console.log(loggedUser);
@@ -80,8 +88,14 @@ export const NavBar = () => {
               </>
             ) : (
               <>
+                <Button color='inherit' onClick={decisionAppeals}>
+                  All Decision Appeals
+                </Button>
+                <Button color='inherit' onClick={silenceAppeals}>
+                  All Silence Appeals
+                </Button>
                 <Button color='inherit' onClick={appeals}>
-                  Appeals
+                  Responses
                 </Button>
                 <Button color='inherit' onClick={responses}>
                   Request Answers

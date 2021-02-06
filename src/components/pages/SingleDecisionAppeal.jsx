@@ -6,12 +6,14 @@ import { useHistory } from "react-router-dom";
 import {
   exportDecisionAppealToXHTML,
   exportDecisionAppealToPDF,
+  withdrawAppeal,
 } from "../../app/citizen/citizen.actions";
 import {
   selectCurrentDecisionAppealPDF,
   selectCurrentDecisionAppealXHTML,
 } from "../../app/citizen/citizen.selectors";
 import { selectLoggedUser } from "../../app/auth/auth.selectors";
+import { notifyOfficialDecision } from "../../app/commissioner/commissioner.action";
 
 export const SingleDecisionAppeal = () => {
   const loggedUser = useSelector(selectLoggedUser);
@@ -70,12 +72,17 @@ export const SingleDecisionAppeal = () => {
   };
 
   const respondToAppeal = () => {
-    localStorage.setItem("appealId", JSON.stringify(id));
+    localStorage.setItem("appealId", id);
+    localStorage.setItem("appealType", false);
     history.push("respondToAppeal");
   };
 
+  const notifyOffical = () => {
+    dispatch(notifyOfficialDecision());
+  };
+
   const handleWithdrawAppeal = () => {
-    dispatch(withdrawAppeal());
+    dispatch(withdrawAppeal(id));
   };
 
   return (
@@ -84,7 +91,10 @@ export const SingleDecisionAppeal = () => {
       <Button onClick={handleExportToXHTML}>Export to XHTML</Button>
       <Button onClick={handleExportToPDF}>Export to PDF</Button>
       {loggedUser.role === "ROLE_POVERENIK" ? (
-        <Button onClick={respondToAppeal}>Respond to appeal</Button>
+        <>
+          <Button onClick={notifyOffical}>Notify Official</Button>
+          <Button onClick={respondToAppeal}>Respond to appeal</Button>
+        </>
       ) : (
         <Button onClick={handleWithdrawAppeal}>Withdraw appeal</Button>
       )}

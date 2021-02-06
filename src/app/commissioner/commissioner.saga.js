@@ -1,26 +1,41 @@
-import { put, call } from "redux-saga/effects";
+import { put, call, select } from "redux-saga/effects";
 import apiRequest from "../api/api.saga";
 import {
-  storeAppeals,
+  storeDecisionAppeals,
   storeMyResponses,
   storeXHTML,
   storePDF,
   storeDecisionPattern,
+  storeSilenceAppeals,
+  storeCreation,
 } from "./commissioner.action";
 import {
-  getAppealsAPI,
+  getDecisionAppealsAPI,
   respondToAppealsAPI,
   getMyResponsesAPI,
-  notifyOfficialAPI,
+  notifyOfficialDecisionAPI,
+  notifyOfficialSilenceAPI,
   exportToXHTMLAPI,
   exportToPDFAPI,
   getDecisionPatternAPI,
+  getSilenceAppealsAPI,
+  sendResponseAPI,
 } from "./commissioner.api";
+import { selectCreation } from "./commissioner.selector";
 
-export function* getAppealsSaga(action) {
+export function* getDecisionAppealsSaga() {
   try {
-    const appeals = yield call(apiRequest, getAppealsAPI(action.payload));
-    yield put(storeAppeals(appeals));
+    const appeals = yield call(apiRequest, getDecisionAppealsAPI());
+    yield put(storeDecisionAppeals(appeals));
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+export function* getSilenceAppealsSaga() {
+  try {
+    const appeals = yield call(apiRequest, getSilenceAppealsAPI());
+    yield put(storeSilenceAppeals(appeals));
   } catch (e) {
     console.error(e);
   }
@@ -28,7 +43,42 @@ export function* getAppealsSaga(action) {
 
 export function* respondToAppealSaga(action) {
   try {
-    yield call(apiRequest, respondToAppealsAPI(action.payload));
+    const id = yield call(apiRequest, respondToAppealsAPI(action.payload));
+    console.log("ID:", id);
+    yield put(storeCreation(id));
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+export function* sendResponseSaga(action) {
+  try {
+    const idDoc = yield select(selectCreation);
+    const parser = new DOMParser();
+    const document = parser.parseFromString(idDoc, "text/xml");
+
+    const resenje = document.implementation.createDocument(
+      null,
+      `notificationEmailDto`
+    );
+    console.log("DOCUMENTT", document);
+    const idNode = document.createElementNS(null, "documentId");
+    idNode.appendChild(
+      document.createTextNode(
+        document.getElementsByTagName("documentId")[0].textContent
+      )
+    );
+    resenje.documentElement.appendChild(idNode);
+
+    const zalba = document.createElementNS(null, "zalbaProtivCutanja");
+    zalba.appendChild(document.createTextNode(action.payload));
+    resenje.documentElement.appendChild(zalba);
+
+    const resenjeStr = new XMLSerializer().serializeToString(resenje);
+    console.log("resnjee", resenje);
+    console.log(resenjeStr);
+    yield call(apiRequest, sendResponseAPI(resenjeStr));
+    yield put(storeCreation(null));
   } catch (e) {
     console.error(e);
   }
@@ -43,9 +93,17 @@ export function* getMyResponsesSaga() {
   }
 }
 
-export function* notifyOfficialSaga(action) {
+export function* notifyOfficialDecisionSaga(action) {
   try {
-    yield call(apiRequest, notifyOfficialAPI(action.payload));
+    yield call(apiRequest, notifyOfficialDecisionAPI(action.payload));
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+export function* notifyOfficialSilenceSaga(action) {
+  try {
+    yield call(apiRequest, notifyOfficialSilenceAPI(action.payload));
   } catch (e) {
     console.error(e);
   }
