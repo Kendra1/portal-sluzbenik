@@ -11,6 +11,8 @@ import {
   GET_SILENCE_APPEAL_PATTERN,
   SEND_DECISION_APPEAL,
   SEND_SILENCE_APPEAL,
+  WITHDRAW_DECISION_APPEAL,
+  WITHDRAW_SILENCE_APPEAL,
 } from "./citizen.constants";
 import {
   exportDecisionAppealToPDFSaga,
@@ -24,6 +26,8 @@ import {
   getSilenceAppealPatternSaga,
   sendDecisionAppealSaga,
   sendSilenceApealSaga,
+  withdrawDecisionAppealSaga,
+  withdrawSilenceAppealSaga,
 } from "./citizen.saga";
 
 export function* watchCitizenSaga() {
@@ -47,4 +51,6 @@ export function* watchCitizenSaga() {
     EXPORT_SILENCE_APPEAL_TO_XHTML,
     exportSilenceAppealToXHTMLSaga
   );
+  yield takeLatest(WITHDRAW_DECISION_APPEAL, withdrawDecisionAppealSaga);
+  yield takeLatest(WITHDRAW_SILENCE_APPEAL, withdrawSilenceAppealSaga);
 }

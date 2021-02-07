@@ -1,5 +1,6 @@
 import { put, call, select } from "redux-saga/effects";
 import apiRequest from "../api/api.saga";
+import { storeSnackbarMessages } from "../snackbar/snackbar.actions";
 import {
   storeDecisionAppeals,
   storeMyResponses,
@@ -43,10 +44,21 @@ export function* getSilenceAppealsSaga() {
 
 export function* respondToAppealSaga(action) {
   try {
-    const id = yield call(apiRequest, respondToAppealsAPI(action.payload));
-    console.log("ID:", id);
+    const id = yield call(
+      apiRequest,
+      respondToAppealsAPI(action.payload.xml, action.payload.type)
+    );
     yield put(storeCreation(id));
   } catch (e) {
+    yield put(
+      storeSnackbarMessages([
+        {
+          type: "error",
+          message:
+            "Process suspended. You are unable to create a response for this appeal",
+        },
+      ])
+    );
     console.error(e);
   }
 }

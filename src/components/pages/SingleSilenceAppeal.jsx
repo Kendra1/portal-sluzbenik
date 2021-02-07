@@ -6,6 +6,7 @@ import { useHistory } from "react-router-dom";
 import {
   exportSilenceAppealToPDF,
   exportSilenceAppealToXHTML,
+  withdrawSilenceAppeal,
 } from "../../app/citizen/citizen.actions";
 import {
   selectCurrentSilenceAppealPDF,
@@ -26,9 +27,14 @@ export const SingleSilenceAppeal = () => {
 
   var parser = new DOMParser();
   var xmlDoc = parser.parseFromString(state, "text/xml");
+
   const id = xmlDoc
     .getElementsByTagName("zpc:zalba_protiv_cutanja")[0]
     .getAttribute("id");
+
+  const status = xmlDoc
+    .getElementsByTagName("zpc:zalba_protiv_cutanja")[0]
+    .getAttribute("status");
 
   const pdfBytes = useSelector(selectCurrentSilenceAppealPDF);
   const xhtmlBytes = useSelector(selectCurrentSilenceAppealXHTML);
@@ -80,17 +86,28 @@ export const SingleSilenceAppeal = () => {
     dispatch(notifyOfficialSilence(id));
   };
 
+  const handleWithdrawAppeal = () => {
+    dispatch(withdrawSilenceAppeal(id));
+  };
+
   return (
     <>
       <XmlEditor docSpec={{}} ref={ref} xml={state} mode='laic' />
       <Button onClick={handleExportToXHTML}>Export to XHTML</Button>
       <Button onClick={handleExportToPDF}>Export to PDF</Button>
+      <Button>Export to RDF</Button>
+      <Button>Export to JSON</Button>
       {loggedUser.role === "ROLE_POVERENIK" ? (
         <>
-          <Button onClick={notifyOffical}>Notify Official</Button>
-
-          <Button onClick={respondToAppeal}>Respond to appeal</Button>
+          {status === "ACTIVE" ? null : (
+            <>
+              <Button onClick={notifyOffical}>Notify Official</Button>
+              <Button onClick={respondToAppeal}>Respond to appeal</Button>
+            </>
+          )}
         </>
+      ) : status === "ACTIVE" ? (
+        <Button onClick={handleWithdrawAppeal}>Withdraw appeal</Button>
       ) : null}
     </>
   );

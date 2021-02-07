@@ -70,6 +70,8 @@ export const SingleDecision = () => {
       <XmlEditor docSpec={{}} ref={ref} xml={state} mode='laic' />
       <Button onClick={handleExportToXHTML}>Export to XHTML</Button>
       <Button onClick={handleExportToPDF}>Export to PDF</Button>
+      <Button>Export to RDF</Button>
+      <Button>Export to JSON</Button>
     </>
   );
 };

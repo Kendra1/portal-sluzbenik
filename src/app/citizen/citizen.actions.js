@@ -95,7 +95,12 @@ export const storeSilenceAppealPattern = (payload) => ({
   payload,
 });
 
-export const withdrawAppeal = (payload) => ({
-  type: constants.WITHDRAW_APPEAL,
+export const withdrawDecisionAppeal = (payload) => ({
+  type: constants.WITHDRAW_DECISION_APPEAL,
+  payload,
+});
+
+export const withdrawSilenceAppeal = (payload) => ({
+  type: constants.WITHDRAW_SILENCE_APPEAL,
   payload,
 });

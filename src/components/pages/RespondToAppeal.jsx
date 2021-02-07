@@ -64,7 +64,12 @@ export const RespondToAppeal = () => {
       const newState = ref.current.getXml();
       if (newState) {
         const newestState = builder.buildObject(newState);
-        dispatch(respondToAppeal(newestState));
+        dispatch(
+          respondToAppeal({
+            xml: newestState,
+            type: localStorage.getItem("appealType"),
+          })
+        );
       }
     }
   };

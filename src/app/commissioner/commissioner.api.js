@@ -13,10 +13,11 @@ export const getSilenceAppealsAPI = () => ({
   method: "get",
 });
 
-export const respondToAppealsAPI = (response) => ({
+export const respondToAppealsAPI = (response, type) => ({
   uri: `/api/resenje`,
   method: "post",
   data: response,
+  params: { zalbaProtivCutanja: type },
 });
 
 export const sendResponseAPI = (payload) => ({

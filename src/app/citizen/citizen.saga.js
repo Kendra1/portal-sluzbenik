@@ -12,6 +12,8 @@ import {
   exportSilenceAppealToPDFAPI,
   getSilenceAppealPatternAPI,
   getDecisionAppealPatternAPI,
+  withdrawDecisionAppealAPI,
+  withdrawSilenceAppealAPI,
 } from "./citizen.api";
 import {
   storeDecisionAppealPattern,
@@ -156,6 +158,22 @@ export function* getSilenceAppealPatternSaga() {
   try {
     const pattern = yield call(apiRequest, getSilenceAppealPatternAPI());
     yield put(storeSilenceAppealPattern(pattern));
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+export function* withdrawDecisionAppealSaga(action) {
+  try {
+    yield call(apiRequest, withdrawDecisionAppealAPI(action.payload));
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+export function* withdrawSilenceAppealSaga(action) {
+  try {
+    yield call(apiRequest, withdrawSilenceAppealAPI(action.payload));
   } catch (e) {
     console.error(e);
   }

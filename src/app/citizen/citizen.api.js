@@ -26,7 +26,7 @@ export const getMyDecisionAppealsAPI = () => ({
 });
 
 export const getMySilenceAppealsAPI = () => ({
-  uri: "/information",
+  uri: "/api/zalbaProtivCutanja/all",
   method: "get",
 });
 
@@ -52,5 +52,15 @@ export const exportSilenceAppealToXHTMLAPI = (id) => ({
 
 export const exportSilenceAppealToPDFAPI = (id) => ({
   uri: `/api/zalbaProtivCutanja/generate/pdf/${id}`,
+  method: "get",
+});
+
+export const withdrawDecisionAppealAPI = (id) => ({
+  uri: `/api/zalbaProtivOdluke/withdraw/${id}`,
+  method: "get",
+});
+
+export const withdrawSilenceAppealAPI = (id) => ({
+  uri: `/api/zalbaProtivCutanja/withdraw/${id}`,
   method: "get",
 });

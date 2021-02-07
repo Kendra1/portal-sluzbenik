@@ -61,7 +61,7 @@ export const CitizenDashboard = () => {
             }}
             onClick={() => handleSingleRequest(req.document)}
           >
-            Go to decision
+            Go to response
           </Button>
         </div>
       ))}

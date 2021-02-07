@@ -63,7 +63,7 @@ export const Dashboard = () => {
             }}
             onClick={() => handleSingleDecision(req.document)}
           >
-            Go to Decision
+            Go to Response
           </Button>
         </div>
       ))}
